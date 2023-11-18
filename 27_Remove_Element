@@ -1,0 +1,26 @@
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int point = 0;
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] == val){
+                for (int x = i; x < nums.length; x++){
+                    if (nums[x] != val){
+                        nums[point] = nums[x];
+                        nums[x] = val;
+                        point += 1;
+                    }
+                }
+            }
+            else {
+                point ++;
+            }
+        }
+        int answer = 0;
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] != val){
+                answer += 1;
+            }
+        }
+        return answer;
+    }
+}
