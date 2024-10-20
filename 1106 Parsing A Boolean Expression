@@ -1,0 +1,76 @@
+class Solution {
+    public boolean parseBoolExpr(String expression) {
+        char[] charArray = expression.toCharArray();
+        Stack<Character> operstack = new Stack<>();
+        Stack<Character> operandstack = new Stack<>();
+        boolean answer = true;
+
+        ArrayList<Character> oper = new ArrayList<>();
+        ArrayList<Character> operand = new ArrayList<>();
+
+        oper.add('&');
+        oper.add('|');
+        oper.add('!');
+
+        operand.add('(');
+        operand.add('t');
+        operand.add('f');
+
+        for (int i = 0; i < charArray.length; i++){
+            if (oper.contains(charArray[i])){
+                operstack.push(charArray[i]);
+            }
+            else if (operand.contains(charArray[i])){
+                operandstack.push(charArray[i]);
+            }
+            else if (charArray[i] == ','){
+                continue;
+            }
+            else if (charArray[i] == ')'){
+                char tempanswer = operandstack.pop();
+            
+                if (tempanswer == 't'){
+                    answer = true;
+                }
+                else {
+                    answer = false;
+                }
+
+
+                char action = operstack.pop();
+
+                while (operandstack.isEmpty() == false){
+                    boolean value = true;
+                    char tfpop = operandstack.pop();
+                    if (tfpop == 't'){
+                        value = true;
+                    } 
+                    else if (tfpop == 'f'){
+                        value = false;
+                    }
+                    else if (tfpop == '('){
+                        if (action == '!'){
+                            answer = !answer;
+                        }
+                        break;
+                    }
+
+                    if (action == '|'){
+                        answer = answer || value;
+                    }
+                    else if (action == '&') {
+                        answer = answer && value;
+                    }
+                }
+
+                if (answer){
+                    operandstack.push('t');
+                }
+                else {
+                    operandstack.push('f');
+                }
+            }
+        }
+        return answer;
+    }
+}
